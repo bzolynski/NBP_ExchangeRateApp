@@ -1,0 +1,22 @@
+﻿<Application
+    x:Class="NBP_ExchangeRateApp.Ui.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:NBP_ExchangeRateApp.Ui"
+    xmlns:viewModels="clr-namespace:NBP_ExchangeRateApp.Ui.ViewModels"
+    xmlns:views="clr-namespace:NBP_ExchangeRateApp.Ui.Views">
+    <Application.Resources>
+
+
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type viewModels:CurrencyTablesViewModel}">
+                <views:CurrencyTablesView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:ShellViewModel}">
+                <views:ShellView />
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+
+</Application>

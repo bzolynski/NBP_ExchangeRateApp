@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBP_ExchangeRateApp.Library", "NBP_ExchangeRateApp.Library\NBP_ExchangeRateApp.Library.csproj", "{8634D784-4B94-4517-B302-DACE3743B70A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBP_ExchangeRateApp.Ui", "NBP_ExchangeRateApp.Ui\NBP_ExchangeRateApp.Ui.csproj", "{67251DD4-F3ED-4E6C-A57B-2A2109593EC1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8634D784-4B94-4517-B302-DACE3743B70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8634D784-4B94-4517-B302-DACE3743B70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8634D784-4B94-4517-B302-DACE3743B70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8634D784-4B94-4517-B302-DACE3743B70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67251DD4-F3ED-4E6C-A57B-2A2109593EC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67251DD4-F3ED-4E6C-A57B-2A2109593EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67251DD4-F3ED-4E6C-A57B-2A2109593EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67251DD4-F3ED-4E6C-A57B-2A2109593EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC924354-3807-4B89-86C2-713FCD5C6EA5}
+	EndGlobalSection
+EndGlobal
