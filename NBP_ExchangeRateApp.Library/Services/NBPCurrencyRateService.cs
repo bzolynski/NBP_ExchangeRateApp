@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Linq;
+using NBP_ExchangeRateApp.Library.Enums;
 
 namespace NBP_ExchangeRateApp.Library.Services
 {

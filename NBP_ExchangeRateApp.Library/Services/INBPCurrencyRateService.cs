@@ -1,4 +1,5 @@
-﻿using NBP_ExchangeRateApp.Library.Models;
+﻿using NBP_ExchangeRateApp.Library.Enums;
+using NBP_ExchangeRateApp.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
