@@ -9,13 +9,13 @@ using System.Windows.Input;
 
 namespace NBP_ExchangeRateApp.Ui.Commands
 {
-    public class ChangeCurrentViewModel : ICommand
+    public class ChangeCurrentViewModelCommand : ICommand
     {
         private readonly IRootViewModelFactory _rootViewModelFactory;
         private readonly INavigator _navigator;
 
 
-        public ChangeCurrentViewModel(IRootViewModelFactory rootViewModelFactory, INavigator navigator)
+        public ChangeCurrentViewModelCommand(IRootViewModelFactory rootViewModelFactory, INavigator navigator)
         {
             _rootViewModelFactory = rootViewModelFactory;
             _navigator = navigator;

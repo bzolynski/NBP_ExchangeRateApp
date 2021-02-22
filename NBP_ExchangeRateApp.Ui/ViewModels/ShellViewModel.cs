@@ -39,7 +39,7 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
             _navigator = navigator;
             _navigator.StateChanged += Navigator_StateChanged;
 
-            ChangeCurrentViewModelCommand = new ChangeCurrentViewModel(rootViewModelFactory, _navigator);
+            ChangeCurrentViewModelCommand = new ChangeCurrentViewModelCommand(rootViewModelFactory, _navigator);
             ChangeCurrentViewModelCommand.Execute(ViewType.Tables);
         }
 
