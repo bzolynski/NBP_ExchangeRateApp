@@ -11,10 +11,14 @@ namespace NBP_ExchangeRateApp.Ui.Factories.ViewModelFactories
     public class RootViewModelFactory : IRootViewModelFactory
     {
         private readonly IViewModelFactory<CurrencyTablesViewModel> _currencyTablesViewModelFactory;
+        private readonly IViewModelFactory<GoldPricesViewModel> _goldPricesViewModelFactory;
 
-        public RootViewModelFactory(IViewModelFactory<CurrencyTablesViewModel> currencyTablesViewModelFactory)
+        public RootViewModelFactory(
+            IViewModelFactory<CurrencyTablesViewModel> currencyTablesViewModelFactory,
+            IViewModelFactory<GoldPricesViewModel> goldPricesViewModelFactory)
         {
             _currencyTablesViewModelFactory = currencyTablesViewModelFactory;
+            _goldPricesViewModelFactory = goldPricesViewModelFactory;
         }
 
         public ViewModelBase CreateViewModel(ViewType viewType)
@@ -26,7 +30,7 @@ namespace NBP_ExchangeRateApp.Ui.Factories.ViewModelFactories
                 case ViewType.Currency:
                     throw new NotImplementedException();
                 case ViewType.Gold:
-                    throw new NotImplementedException();
+                    return _goldPricesViewModelFactory.CreateViewModel();
                 default:
                     throw new Exception();
             }

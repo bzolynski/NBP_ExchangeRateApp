@@ -53,13 +53,16 @@ namespace NBP_ExchangeRateApp.Ui
             // Views
             services.AddSingleton<ShellView>();
             services.AddSingleton<CurrencyTablesView>();
+            services.AddSingleton<GoldPricesView>();
 
             // ViewModels
             services.AddSingleton<ShellViewModel>();
             services.AddScoped<CurrencyTablesViewModel>();
+            services.AddScoped<GoldPricesView>();
 
             // Services
             services.AddScoped<INBPCurrencyRateService, NBPCurrencyRateService>();
+            services.AddScoped<INBPGoldValueService, NBPGoldValueService>();
 
             // States
             services.AddSingleton<INavigator, Navigator>();
@@ -67,6 +70,7 @@ namespace NBP_ExchangeRateApp.Ui
             // Factories
             services.AddScoped<IRootViewModelFactory, RootViewModelFactory>();
             services.AddScoped<IViewModelFactory<CurrencyTablesViewModel>, CurrencyTablesViewModelFactory>();
+            services.AddScoped<IViewModelFactory<GoldPricesViewModel>, GoldPricesViewModelFactory>();
 
             return services.BuildServiceProvider();
         }

@@ -16,6 +16,10 @@
             <DataTemplate DataType="{x:Type viewModels:ShellViewModel}">
                 <views:ShellView />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:GoldPricesViewModel}">
+                <views:GoldPricesView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 
