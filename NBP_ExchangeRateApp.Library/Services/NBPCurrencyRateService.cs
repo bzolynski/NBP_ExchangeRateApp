@@ -14,55 +14,53 @@ namespace NBP_ExchangeRateApp.Library.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string ISO8601DateFormat = "yyyy-MM-dd";
-
+        private readonly List<Rate> _currencyRates;
         public NBPCurrencyRateService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
+            _currencyRates = new List<Rate>();
         }
 
-        public async Task<IEnumerable<Rate>> GetCurrentCurrencyRates(TableType table)
+        public async Task<IEnumerable<Rate>> GetCurrent(TableType table)
         {
-            var currencyRates = new List<Rate>();
             var uri = $"exchangerates/tables/{ table }";
 
-            await LoadCurrencyRates(currencyRates, uri);
+            await LoadCurrencyRates(uri);
 
-            return currencyRates;
+            return _currencyRates;
         }
 
-        public async Task<IEnumerable<Rate>> GetCurrencyRatesBetweenDates(TableType table, DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<Rate>> GetBetweenDates(TableType table, DateTime startDate, DateTime endDate)
         {
-            var currencyRates = new List<Rate>();
-
             var uri = $"exchangerates/tables/{ table }/{ startDate.ToString(ISO8601DateFormat) }/{ endDate.ToString(ISO8601DateFormat) }";
 
-            await LoadCurrencyRates(currencyRates, uri);
+            await LoadCurrencyRates(uri);
 
-            return currencyRates;
+            return _currencyRates;
         }
 
-        public async Task<IEnumerable<Rate>> GetCurrencyRatesOnDate(TableType table, DateTime date)
+        public async Task<IEnumerable<Rate>> GetOnDate(TableType table, DateTime date)
         {
-            var currencyRates = new List<Rate>();
-
             var uri = $"exchangerates/tables/{ table }/{ date.ToString(ISO8601DateFormat) }/";
 
-            await LoadCurrencyRates(currencyRates, uri);
+            await LoadCurrencyRates(uri);
 
-            return currencyRates;
+            return _currencyRates;
         }
 
-        private async Task LoadCurrencyRates(List<Rate> currencyRates, string uri)
+        private async Task LoadCurrencyRates(string uri)
         {
             using (var httpClient = _httpClientFactory.CreateClient("NBP"))
             {
+                _currencyRates.Clear();
+
                 var responseMessage = await httpClient.GetAsync(uri);
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var stringContent = await responseMessage.Content.ReadAsStringAsync();
                     var rateReports = JsonConvert.DeserializeObject<List<CurrencyRateReport>>(stringContent);
-                    rateReports.ForEach(r => currencyRates.AddRange(r.Rates));
+                    rateReports.ForEach(r => _currencyRates.AddRange(r.Rates));
                 }
                 else
                 {

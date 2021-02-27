@@ -19,7 +19,7 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
         #region Private fields
         private TableType _selectedTableType;
         private bool _isDatePeriod;
-        private bool _isShowLatest;
+        private bool _isShowLatest = true;
 
         private List<Rate> _rates;
         private DateTime _selectedDate = DateTime.Today;
@@ -98,15 +98,15 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
 
             if (_isShowLatest)
             {
-                _rates.AddRange(await _currencyRateService.GetCurrentCurrencyRates(_selectedTableType));
+                _rates.AddRange(await _currencyRateService.GetCurrent(_selectedTableType));
             }            
             else if (_isDatePeriod)
             {
-                _rates.AddRange(await _currencyRateService.GetCurrencyRatesBetweenDates(_selectedTableType, _selectedStatDate, _selectedEndDate));
+                _rates.AddRange(await _currencyRateService.GetBetweenDates(_selectedTableType, _selectedStatDate, _selectedEndDate));
             }
             else
             {
-                _rates.AddRange(await _currencyRateService.GetCurrencyRatesOnDate(_selectedTableType, _selectedDate));
+                _rates.AddRange(await _currencyRateService.GetOnDate(_selectedTableType, _selectedDate));
             }
 
             RateCollectionView.Refresh();

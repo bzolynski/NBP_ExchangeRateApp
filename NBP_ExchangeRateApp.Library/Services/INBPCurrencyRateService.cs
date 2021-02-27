@@ -8,8 +8,8 @@ namespace NBP_ExchangeRateApp.Library.Services
 {
     public interface INBPCurrencyRateService
     {
-        Task<IEnumerable<Rate>> GetCurrencyRatesBetweenDates(TableType table, DateTime startDate, DateTime endDate);
-        Task<IEnumerable<Rate>> GetCurrencyRatesOnDate(TableType table, DateTime date);
-        Task<IEnumerable<Rate>> GetCurrentCurrencyRates(TableType table);
+        Task<IEnumerable<Rate>> GetBetweenDates(TableType table, DateTime startDate, DateTime endDate);
+        Task<IEnumerable<Rate>> GetOnDate(TableType table, DateTime date);
+        Task<IEnumerable<Rate>> GetCurrent(TableType table);
     }
 }
