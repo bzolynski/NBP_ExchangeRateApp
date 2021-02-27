@@ -14,6 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using FluentValidation;
+using System.Reflection;
 
 namespace NBP_ExchangeRateApp.Ui
 {
@@ -43,13 +45,14 @@ namespace NBP_ExchangeRateApp.Ui
             
             services.AddSingleton(Configuration);
 
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddHttpClient("NBP", c =>
             {
                 c.BaseAddress = new Uri("http://api.nbp.pl/api/");
                 c.DefaultRequestHeaders.Add("Accept", "application/json ");
             });
 
-            
+
             // Views
             services.AddSingleton<ShellView>();
             services.AddSingleton<CurrencyTablesView>();

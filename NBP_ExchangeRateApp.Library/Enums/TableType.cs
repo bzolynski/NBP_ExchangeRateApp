@@ -14,7 +14,7 @@ namespace NBP_ExchangeRateApp.Library.Enums
         a,
         [Description("Unommon")]
         b,
-        [Description("Gold")]
+        [Description("Buy and sell prices")]
         c
     }
 }

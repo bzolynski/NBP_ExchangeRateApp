@@ -2,6 +2,7 @@
 using NBP_ExchangeRateApp.Library.Models;
 using NBP_ExchangeRateApp.Library.Services;
 using NBP_ExchangeRateApp.Ui.Commands;
+using NBP_ExchangeRateApp.Ui.Validators;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,20 +15,62 @@ using System.Windows.Input;
 
 namespace NBP_ExchangeRateApp.Ui.ViewModels
 {
-    public class CurrencyTablesViewModel : ViewModelBase
+    public class CurrencyTablesViewModel : ViewModelBase, IApiQueryableViewModel, IDataErrorInfo
     {
+
+        // Validation
+        #region Validation
+        public string Error => null;
+
+        public string this[string propertyName] 
+        {
+            get
+            {
+                var errors = _validationRules.Validate(this).Errors;
+
+                _canSubmit = errors.Count() > 0 ? false : true;
+
+                var error = errors.FirstOrDefault(e => e.PropertyName == propertyName);
+
+                if (ErrorCollection.ContainsKey(propertyName) && error != null)
+                {
+                    ErrorCollection[propertyName] = error.ErrorMessage;
+                }
+                else if (error != null)
+                {
+                    ErrorCollection.Add(propertyName, error.ErrorMessage);
+                }
+                else
+                {
+                    ErrorCollection.Remove(propertyName);
+                }
+
+                OnPropertyChanged(nameof(ErrorCollection));
+
+                if (ErrorCollectionView != null)
+                    ErrorCollectionView.Refresh();
+
+                return error != null ? error.ErrorMessage : null;
+            }
+        }
+
+        #endregion
+
         // Private fields
         #region Private fields
-        private TableType _selectedTableType;
+        private bool _canSubmit;
         private bool _isDatePeriod;
         private bool _isShowLatest = true;
-        private string _selectedCode;
-
         private List<Rate> _rates;
+        private Dictionary<string, string> _errorCollection;
+        private string _selectedCode;
+        private TableType _selectedTableType;
         private DateTime _selectedDate = DateTime.Today;
-        private DateTime _selectedStatDate = DateTime.Today;
+        private DateTime _selectedStartDate = DateTime.Today;
         private DateTime _selectedEndDate = DateTime.Today;
+
         private readonly INBPCurrencyRateService _currencyRateService;
+        private readonly ApiQueryableValidator _validationRules;
 
         #endregion
 
@@ -40,6 +83,9 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
             {
                 _isDatePeriod = value;
                 OnPropertyChanged(nameof(IsDatePeriod));
+                OnPropertyChanged(nameof(SelectedDate));
+                OnPropertyChanged(nameof(SelectedStartDate));
+                OnPropertyChanged(nameof(SelectedEndDate));
             }
         }
         public bool IsShowLatest
@@ -55,8 +101,12 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
                 }
 
                 OnPropertyChanged(nameof(IsShowLatest));
+                OnPropertyChanged(nameof(SelectedDate));
+                OnPropertyChanged(nameof(SelectedStartDate));
+                OnPropertyChanged(nameof(SelectedEndDate));
             }
         }
+
         public string SelectedCode
         {
             get { return _selectedCode; }
@@ -69,31 +119,61 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
                 }
             }
         }
-
-
-        public List<TableType> AvailableTypes { get; private set; }
         public TableType SelectedTableType { get => _selectedTableType; set => _selectedTableType = value; }
         public DateTime SelectedDate { get => _selectedDate; set => _selectedDate = value; }
-        public DateTime SelectedStartDate { get => _selectedStatDate; set => _selectedStatDate = value; }
-        public DateTime SelectedEndDate { get => _selectedEndDate; set => _selectedEndDate = value; }
+        public DateTime SelectedStartDate
+        {
+            get { return _selectedStartDate; }
+            set
+            {
+                _selectedStartDate = value;
+                OnPropertyChanged(nameof(SelectedStartDate));
+                OnPropertyChanged(nameof(SelectedEndDate));
+            }
+        }
+        public DateTime SelectedEndDate
+        {
+            get { return _selectedEndDate; }
+            set
+            {
+                _selectedEndDate = value;
+                OnPropertyChanged(nameof(SelectedStartDate));
+                OnPropertyChanged(nameof(SelectedEndDate));
+            }
+        }
+         
+        public List<TableType> AvailableTypes { get; private set; }
+        public Dictionary<string, string> ErrorCollection
+        {
+            get { return _errorCollection; }
+            set
+            {
+                _errorCollection = value;
+                OnPropertyChanged(nameof(ErrorCollection));
+            }
+        }
         public ICollectionView RateCollectionView { get; set; }
+        public ICollectionView ErrorCollectionView { get; set; }
         public ObservableCollection<Rate> RatesCollection { get; set; }
         #endregion
 
         // Commands
         #region Commands
         public ICommand LoadCurrencyRatesCommand { get; set; }
-        public ICommand ClearSelectedCodeCommand { get; set; }
+        
         #endregion
 
         // Constructors
         #region Constructors
-        public CurrencyTablesViewModel(INBPCurrencyRateService currencyRateService)
+        public CurrencyTablesViewModel(INBPCurrencyRateService currencyRateService, ApiQueryableValidator validationRules)
         {
             _currencyRateService = currencyRateService;
-            _rates = new List<Rate>();
+            _validationRules = validationRules;
+            ErrorCollection = new();
+            _rates = new();
             AvailableTypes = new List<TableType> { TableType.a, TableType.b };
 
+            ErrorCollectionView = CollectionViewSource.GetDefaultView(_errorCollection.Values);
 
             RateCollectionView = CollectionViewSource.GetDefaultView(_rates);
             RateCollectionView.SortDescriptions.Add(new SortDescription(nameof(Rate.ReportDate), ListSortDirection.Ascending));
@@ -101,15 +181,8 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
             RateCollectionView.Filter = FilterRates;
 
             // TODO: Custom exception 
-            LoadCurrencyRatesCommand = new AsyncRelayCommand(LoadCurrencyRates, (ex) => throw ex);
+            LoadCurrencyRatesCommand = new AsyncRelayCommand(LoadCurrencyRates, (obj) => _canSubmit, (ex) => throw ex);
         }
-
-        
-
-
-
-
-
 
         #endregion
 
@@ -125,7 +198,7 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
             }            
             else if (_isDatePeriod)
             {
-                _rates.AddRange(await _currencyRateService.GetBetweenDates(_selectedTableType, _selectedStatDate, _selectedEndDate));
+                _rates.AddRange(await _currencyRateService.GetBetweenDates(_selectedTableType, _selectedStartDate, _selectedEndDate));
             }
             else
             {
