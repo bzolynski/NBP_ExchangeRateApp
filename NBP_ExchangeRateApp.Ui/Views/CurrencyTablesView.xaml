@@ -179,30 +179,44 @@
                     <DatePicker Grid.Column="1" SelectedDate="{Binding SelectedEndDate, Mode=TwoWay}" />
                 </Grid>
 
-                <ComboBox
+                <!--  Selected currency  -->
+                <Grid
                     Grid.Row="4"
                     Grid.Column="0"
-                    SelectedValue="{Binding SelectedCode}"
-                    SelectedValuePath="Code">
-                    <ComboBox.Resources>
-                        <CollectionViewSource x:Key="Codes" Source="{Binding RatesCollection}" />
-                    </ComboBox.Resources>
-                    <ComboBox.ItemsSource>
-                        <CompositeCollection>
-                            <models:Rate />
-                            <CollectionContainer Collection="{Binding Source={StaticResource Codes}}" />
-                        </CompositeCollection>
-                    </ComboBox.ItemsSource>
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <Run Text="{Binding Code}" />
-                                <Run Text="-" />
-                                <Run Text="{Binding Currency}" />
-                            </TextBlock>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                    Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Label  -->
+                    <TextBlock Grid.Row="0" Text="Display only (currency): " />
+                    <!--  Combobox  -->
+                    <ComboBox
+                        Grid.Row="1"
+                        SelectedValue="{Binding SelectedCode}"
+                        SelectedValuePath="Code">
+                        <ComboBox.Resources>
+                            <CollectionViewSource x:Key="Codes" Source="{Binding RatesCollection}" />
+                        </ComboBox.Resources>
+                        <ComboBox.ItemsSource>
+                            <CompositeCollection>
+                                <models:Rate />
+                                <CollectionContainer Collection="{Binding Source={StaticResource Codes}}" />
+                            </CompositeCollection>
+                        </ComboBox.ItemsSource>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Code}" />
+                                    <Run Text="-" />
+                                    <Run Text="{Binding Currency}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                </Grid>
 
 
 

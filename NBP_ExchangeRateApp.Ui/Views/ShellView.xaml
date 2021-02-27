@@ -10,7 +10,7 @@
     x:Name="shell"
     Title="ShellView"
     Width="800"
-    Height="450"
+    Height="500"
     MinWidth="800"
     MinHeight="450"
     d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}"
@@ -18,21 +18,34 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <Image Grid.Row="0" Source="/NBP_ExchangeRateApp.Ui;component/Assets/image.png" />
+        <Grid Grid.Row="1">
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Height" Value="30" />
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
             <Button
+                Grid.Column="0"
                 Command="{Binding ChangeCurrentViewModelCommand}"
                 CommandParameter="{x:Static navigator:ViewType.Tables}"
-                Content="Tables" />
+                Content="Currencies" />
             <Button
+                Grid.Column="1"
                 Command="{Binding ChangeCurrentViewModelCommand}"
                 CommandParameter="{x:Static navigator:ViewType.Gold}"
                 Content="Gold" />
-        </StackPanel>
+        </Grid>
 
-        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" />
+        <ContentControl Grid.Row="2" Content="{Binding CurrentViewModel}" />
 
     </Grid>
 </Window>

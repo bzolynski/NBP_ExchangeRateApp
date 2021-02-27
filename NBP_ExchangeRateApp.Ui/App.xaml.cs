@@ -49,7 +49,7 @@ namespace NBP_ExchangeRateApp.Ui
                 c.DefaultRequestHeaders.Add("Accept", "application/json ");
             });
 
-
+            
             // Views
             services.AddSingleton<ShellView>();
             services.AddSingleton<CurrencyTablesView>();
