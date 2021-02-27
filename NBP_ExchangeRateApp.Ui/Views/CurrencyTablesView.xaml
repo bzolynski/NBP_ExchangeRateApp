@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:NBP_ExchangeRateApp.Ui.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:NBP_ExchangeRateApp.Library.Models;assembly=NBP_ExchangeRateApp.Library"
     xmlns:viewmodels="clr-namespace:NBP_ExchangeRateApp.Ui.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:CurrencyTablesViewModel}"
     d:DesignHeight="450"
@@ -30,6 +31,7 @@
                     </Style>
                 </Grid.Resources>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -177,10 +179,36 @@
                     <DatePicker Grid.Column="1" SelectedDate="{Binding SelectedEndDate, Mode=TwoWay}" />
                 </Grid>
 
+                <ComboBox
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    SelectedValue="{Binding SelectedCode}"
+                    SelectedValuePath="Code">
+                    <ComboBox.Resources>
+                        <CollectionViewSource x:Key="Codes" Source="{Binding RatesCollection}" />
+                    </ComboBox.Resources>
+                    <ComboBox.ItemsSource>
+                        <CompositeCollection>
+                            <models:Rate />
+                            <CollectionContainer Collection="{Binding Source={StaticResource Codes}}" />
+                        </CompositeCollection>
+                    </ComboBox.ItemsSource>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding Code}" />
+                                <Run Text="-" />
+                                <Run Text="{Binding Currency}" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+
 
                 <!--  Button  -->
                 <Button
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Command="{Binding LoadCurrencyRatesCommand}"
                     Content="Load" />
             </Grid>

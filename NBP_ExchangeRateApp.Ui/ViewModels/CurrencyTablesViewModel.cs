@@ -4,6 +4,7 @@ using NBP_ExchangeRateApp.Library.Services;
 using NBP_ExchangeRateApp.Ui.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
         private TableType _selectedTableType;
         private bool _isDatePeriod;
         private bool _isShowLatest = true;
+        private string _selectedCode;
 
         private List<Rate> _rates;
         private DateTime _selectedDate = DateTime.Today;
@@ -55,6 +57,19 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
                 OnPropertyChanged(nameof(IsShowLatest));
             }
         }
+        public string SelectedCode
+        {
+            get { return _selectedCode; }
+            set
+            {
+                if(value != _selectedCode)
+                {
+                    _selectedCode = value;
+                    RateCollectionView.Refresh();
+                }
+            }
+        }
+
 
         public List<TableType> AvailableTypes { get; private set; }
         public TableType SelectedTableType { get => _selectedTableType; set => _selectedTableType = value; }
@@ -62,11 +77,13 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
         public DateTime SelectedStartDate { get => _selectedStatDate; set => _selectedStatDate = value; }
         public DateTime SelectedEndDate { get => _selectedEndDate; set => _selectedEndDate = value; }
         public ICollectionView RateCollectionView { get; set; }
+        public ObservableCollection<Rate> RatesCollection { get; set; }
         #endregion
 
         // Commands
         #region Commands
         public ICommand LoadCurrencyRatesCommand { get; set; }
+        public ICommand ClearSelectedCodeCommand { get; set; }
         #endregion
 
         // Constructors
@@ -77,13 +94,20 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
             _rates = new List<Rate>();
             AvailableTypes = new List<TableType> { TableType.a, TableType.b };
 
+
             RateCollectionView = CollectionViewSource.GetDefaultView(_rates);
             RateCollectionView.SortDescriptions.Add(new SortDescription(nameof(Rate.ReportDate), ListSortDirection.Ascending));
             RateCollectionView.SortDescriptions.Add(new SortDescription(nameof(Rate.Code), ListSortDirection.Ascending));
+            RateCollectionView.Filter = FilterRates;
 
             // TODO: Custom exception 
             LoadCurrencyRatesCommand = new AsyncRelayCommand(LoadCurrencyRates, (ex) => throw ex);
+            ClearSelectedCodeCommand = new RelayCommand(ClearSelectedCode);
         }
+
+        
+
+
 
 
 
@@ -110,6 +134,30 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
             }
 
             RateCollectionView.Refresh();
+            RatesCollection = new ObservableCollection<Rate>(_rates.GroupBy(x => x.Code)
+                .Select(y => y.First())
+                .OrderBy(z => z.Code));
+
+            OnPropertyChanged(nameof(RatesCollection));
+        }
+
+        private void ClearSelectedCode(object obj)
+        {
+            SelectedCode = null;
+        }
+
+        private bool FilterRates(object obj)
+        {
+            if (_selectedCode == null)
+            {
+                return true;
+            }
+            if(obj is Rate rate)
+            {
+                return rate.Code.Contains(_selectedCode);
+            }
+
+            return false;
         }
         #endregion
 
