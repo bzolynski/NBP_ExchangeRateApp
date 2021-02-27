@@ -102,7 +102,6 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
 
             // TODO: Custom exception 
             LoadCurrencyRatesCommand = new AsyncRelayCommand(LoadCurrencyRates, (ex) => throw ex);
-            ClearSelectedCodeCommand = new RelayCommand(ClearSelectedCode);
         }
 
         
@@ -139,11 +138,6 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
                 .OrderBy(z => z.Code));
 
             OnPropertyChanged(nameof(RatesCollection));
-        }
-
-        private void ClearSelectedCode(object obj)
-        {
-            SelectedCode = null;
         }
 
         private bool FilterRates(object obj)
