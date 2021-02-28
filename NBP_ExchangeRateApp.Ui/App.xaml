@@ -20,6 +20,10 @@
             <DataTemplate DataType="{x:Type viewModels:GoldPricesViewModel}">
                 <views:GoldPricesView />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:DialogViewModel}">
+                <views:DialogView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 
