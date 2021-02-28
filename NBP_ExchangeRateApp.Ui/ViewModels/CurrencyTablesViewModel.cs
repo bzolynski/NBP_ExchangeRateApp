@@ -63,6 +63,7 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
         private bool _isShowLatest = true;
         private List<Rate> _rates;
         private Dictionary<string, string> _errorCollection;
+        private string _errorMessage;
         private string _selectedCode;
         private TableType _selectedTableType;
         private DateTime _selectedDate = DateTime.Today;
@@ -106,6 +107,17 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
                 OnPropertyChanged(nameof(SelectedEndDate));
             }
         }
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
+
 
         public string SelectedCode
         {
@@ -181,7 +193,7 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
             RateCollectionView.Filter = FilterRates;
 
             // TODO: Custom exception 
-            LoadCurrencyRatesCommand = new AsyncRelayCommand(LoadCurrencyRates, (obj) => _canSubmit, (ex) => throw ex);
+            LoadCurrencyRatesCommand = new AsyncRelayCommand(LoadCurrencyRates, (obj) => _canSubmit, (ex) => OpenDialog(ex.Message));
         }
 
         #endregion

@@ -61,7 +61,7 @@ namespace NBP_ExchangeRateApp.Library.Services
                 }
                 else
                 {
-                    throw new Exception(responseMessage.StatusCode.ToString());
+                    throw new Exception("Can't load data:\n" + responseMessage.ReasonPhrase);
                 }
 
             }

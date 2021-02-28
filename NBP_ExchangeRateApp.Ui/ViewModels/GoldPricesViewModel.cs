@@ -156,7 +156,7 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
             GoldPriceCollectionView = CollectionViewSource.GetDefaultView(_goldReports);
             GoldPriceCollectionView.SortDescriptions.Add(new SortDescription(nameof(GoldReport.ReportDate), ListSortDirection.Ascending));
 
-            LoadGoldPricesCommand = new AsyncRelayCommand(LoadGoldPrices, (obj) => _canSubmit, (ex) => throw ex);
+            LoadGoldPricesCommand = new AsyncRelayCommand(LoadGoldPrices, (obj) => _canSubmit, (ex) => OpenDialog(ex.Message));
         }
 
 

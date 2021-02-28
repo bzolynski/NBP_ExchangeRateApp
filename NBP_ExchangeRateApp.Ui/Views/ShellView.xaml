@@ -16,36 +16,42 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}"
     mc:Ignorable="d">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" Source="/NBP_ExchangeRateApp.Ui;component/Assets/image.png" />
-        <Grid Grid.Row="1">
-            <Grid.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Height" Value="30" />
-                </Style>
-            </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button
-                Grid.Column="0"
-                Command="{Binding ChangeCurrentViewModelCommand}"
-                CommandParameter="{x:Static navigator:ViewType.Tables}"
-                Content="Currencies" />
-            <Button
-                Grid.Column="1"
-                Command="{Binding ChangeCurrentViewModelCommand}"
-                CommandParameter="{x:Static navigator:ViewType.Gold}"
-                Content="Gold" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Image Grid.Row="0" Source="/NBP_ExchangeRateApp.Ui;component/Assets/image.png" />
+            <Grid Grid.Row="1">
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Height" Value="30" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding ChangeCurrentViewModelCommand}"
+                    CommandParameter="{x:Static navigator:ViewType.Tables}"
+                    Content="Currencies" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding ChangeCurrentViewModelCommand}"
+                    CommandParameter="{x:Static navigator:ViewType.Gold}"
+                    Content="Gold" />
+            </Grid>
+
+            <ContentControl Grid.Row="2" Content="{Binding CurrentViewModel}" />
+
         </Grid>
 
-        <ContentControl Grid.Row="2" Content="{Binding CurrentViewModel}" />
-
+        <!--  "Dialog"  -->
+        <ContentControl Content="{Binding DialogViewModel}" />
     </Grid>
 </Window>

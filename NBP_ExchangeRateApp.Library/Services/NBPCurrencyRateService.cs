@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Linq;
 using NBP_ExchangeRateApp.Library.Enums;
+using System.Net;
 
 namespace NBP_ExchangeRateApp.Library.Services
 {
@@ -64,9 +65,8 @@ namespace NBP_ExchangeRateApp.Library.Services
                 }
                 else
                 {
-                    throw new Exception(responseMessage.StatusCode.ToString());
+                    throw new Exception("Can't load data:\n" + responseMessage.ReasonPhrase);
                 }
-
             }
         }
     }

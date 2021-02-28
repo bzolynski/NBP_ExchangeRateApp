@@ -23,6 +23,7 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
         // Properties
         #region Properties
         public ViewModelBase CurrentViewModel => _navigator.CurrentViewModel;
+        public DialogViewModel DialogViewModel { get; set; }
 
         #endregion
 
@@ -50,6 +51,20 @@ namespace NBP_ExchangeRateApp.Ui.ViewModels
         private void Navigator_StateChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
+            CurrentViewModel.OnOpenDialog += CurrentViewModel_OpenDialog;
+        }
+
+        private void CurrentViewModel_OpenDialog(string message)
+        {
+            DialogViewModel = new DialogViewModel(message);
+            OnPropertyChanged(nameof(DialogViewModel));
+            DialogViewModel.OnDialogClose += CurrentViewModel_CloseDialog;
+        }
+
+        private void CurrentViewModel_CloseDialog()
+        {
+            DialogViewModel = null;
+            OnPropertyChanged(nameof(DialogViewModel));
         }
 
         #endregion
